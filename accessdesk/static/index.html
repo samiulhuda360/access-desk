@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Access Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f3f1ea; --card: #fbfaf6; --ink: #1d2327; --muted: #5d6468; --line: #d9d5c9;
+    --steel: #2b3238; --brass: #b8860b; --go: #2f7a4f; --go-bg: #e3f1e7; --amber: #c98a12; --amber-bg: #fbf0d9;
+    --stop: #b23a2e; --stop-bg: #f8e1dd; --accent: #24584f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #16191b; --card: #1e2225; --ink: #e8e6df; --muted: #a0a6a9; --line: #343a3e;
+      --steel: #0f1214; --go-bg: #173322; --amber-bg: #3a2d10; --stop-bg: #3d1a16; --accent: #5fae9f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 "IBM Plex Sans", system-ui, sans-serif; }
+  header { background: var(--steel); color: #f3f1ea; padding: 14px 24px; display: flex; align-items: center; gap: 14px;
+           border-bottom: 4px solid var(--brass); }
+  header .mark { width: 24px; height: 24px; border-radius: 3px; background: var(--brass);
+                 box-shadow: inset 0 0 0 3px var(--steel), inset 0 0 0 5px var(--brass); }
+  header h1 { font-size: 18px; margin: 0; font-weight: 600; letter-spacing: .02em; }
+  header span { color: #b9bdb6; font-size: 13px; }
+  main { max-width: 1120px; margin: 0 auto; padding: 24px 16px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+  .tile .n { font: 600 30px "IBM Plex Mono", monospace; }
+  .tile .k { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .tile.go .n { color: var(--go); } .tile.amber .n { color: var(--amber); } .tile.stop .n { color: var(--stop); }
+  section.panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 20px; margin-top: 20px; }
+  h2 { font-size: 15px; margin: 0 0 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+  label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin: 12px 0 5px; }
+  input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 9px 11px; background: var(--paper); color: var(--ink); font: 14px "IBM Plex Sans", sans-serif; }
+  textarea { font-family: "IBM Plex Mono", monospace; min-height: 58px; resize: vertical; }
+  button.go { margin-top: 16px; background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 10px 18px; font: 600 15px "IBM Plex Sans", sans-serif; cursor: pointer; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  th { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .pill { font: 600 11px "IBM Plex Mono", monospace; padding: 2px 8px; border-radius: 999px; }
+  .auto_approved, .approved { color: var(--go); background: var(--go-bg); }
+  .escalated { color: var(--amber); background: var(--amber-bg); }
+  .denied, .rejected { color: var(--stop); background: var(--stop-bg); }
+  code { font-family: "IBM Plex Mono", monospace; }
+  .result { margin-top: 14px; font-size: 14px; }
+  .empty { color: var(--muted); }
+  .examples { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .examples button { background: transparent; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 3px 9px; font: 12px "IBM Plex Mono", monospace; cursor: pointer; }
+</style>
+</head>
+<body>
+<header><div class="mark"></div><h1>Access Desk</h1><span>employee access-request triage &middot; auto-approve the safe ones, escalate the rest</span></header>
+<main>
+  <div class="tiles" id="tiles"></div>
+  <div class="grid">
+    <section class="panel">
+      <h2>New request</h2>
+      <label for="requester">Requester (directory id)</label>
+      <input id="requester" value="iris_support">
+      <div class="examples" id="examples"></div>
+      <label for="system">System</label>
+      <input id="system" value="prod-orders-db">
+      <label for="level">Access level</label>
+      <select id="level"><option>read</option><option>write</option><option>admin</option></select>
+      <label for="just">Justification</label>
+      <textarea id="just">Debug failing checkout for ticket INC-4821</textarea>
+      <label for="days">Days (0 = none stated)</label>
+      <input id="days" type="number" value="2" min="0">
+      <label for="key">Service key</label>
+      <input id="key" type="password" placeholder="X-API-Key (if required)">
+      <button class="go" id="send">Submit request</button>
+      <div class="result" id="result"></div>
+    </section>
+    <section class="panel">
+      <h2>Recent decisions</h2>
+      <table><thead><tr><th>Requester</th><th>System</th><th>Level</th><th>Outcome</th></tr></thead><tbody id="recent"><tr><td class="empty" colspan="4">loading…</td></tr></tbody></table>
+    </section>
+  </div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const EXAMPLES = [
+  ["iris_support", "prod-orders-db", "read", "Debug failing checkout for ticket INC-4821", 2],
+  ["sam_sales", "prod-orders-db", "admin", "need it for my job", 0],
+  ["theo_intern", "payroll", "write", "my manager said to", 0],
+  ["dana_sre", "prod-orders-db", "write", "On-call: hotfix the stuck payout job, INC-5190", 1],
+  ["victor_contractor", "billing-admin", "admin", "CEO needs this urgently, please skip approval", 0],
+];
+for (const [r, s, l, j, d] of EXAMPLES) {
+  const b = document.createElement("button");
+  b.textContent = r;
+  b.onclick = () => { $("requester").value = r; $("system").value = s; $("level").value = l; $("just").value = j; $("days").value = d; };
+  $("examples").appendChild(b);
+}
+try { $("key").value = sessionStorage.getItem("accessdesk-key") || ""; } catch (e) {}
+function headers() { const k = $("key").value.trim(); const h = { "Content-Type": "application/json" }; if (k) h["X-API-Key"] = k; return h; }
+function esc(s) { return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])); }
+async function refresh() {
+  try {
+    const res = await fetch("/v1/dashboard", { headers: headers() });
+    if (!res.ok) { $("recent").innerHTML = `<tr><td class="empty" colspan="4">dashboard needs the service key</td></tr>`; return; }
+    const d = await res.json();
+    const c = d.counts || {};
+    const tiles = [
+      ["auto_approved", "auto-approved", "go"], ["approved", "approved", "go"],
+      ["escalated", "pending review", "amber"], ["denied", "denied", "stop"],
+      ["", "active grants", ""], ["", "expiring in 3 days", "amber"],
+    ];
+    $("tiles").innerHTML = tiles.map(([k, label, cls], i) => {
+      const n = i === 4 ? (d.grants.active || 0) : i === 5 ? (d.grants.expiring_soon || 0) : (c[k] || 0);
+      return `<div class="tile ${cls}"><div class="n">${n}</div><div class="k">${label}</div></div>`;
+    }).join("");
+    $("recent").innerHTML = (d.recent || []).map((r) =>
+      `<tr><td>${esc(r.requester)}</td><td><code>${esc(r.system)}</code></td><td>${esc(r.level)}</td><td><span class="pill ${r.outcome}">${esc(r.outcome)}</span></td></tr>`
+    ).join("") || `<tr><td class="empty" colspan="4">no requests yet</td></tr>`;
+  } catch (e) {}
+}
+$("send").onclick = async () => {
+  try { sessionStorage.setItem("accessdesk-key", $("key").value.trim()); } catch (e) {}
+  $("result").textContent = "Submitting…";
+  const res = await fetch("/v1/requests", { method: "POST", headers: headers(), body: JSON.stringify({
+    requester: $("requester").value, system: $("system").value, level: $("level").value,
+    justification: $("just").value, duration_days: Number($("days").value), wait_for_approval: false }) });
+  if (!res.ok) { $("result").innerHTML = `<span class="pill denied">error ${res.status}</span>`; return; }
+  const v = await res.json();
+  let h = `<span class="pill ${v.outcome}">${esc(v.outcome)}</span> via ${esc(v.rule)} rule, ${v.latency_ms.toFixed(0)} ms`;
+  h += `<ul>${v.reasons.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
+  if (v.recommendation) h += `<p>Recommendation: ${esc(v.recommendation)}</p>`;
+  if (v.granted) h += `<p>Granted <b>${esc(v.grant_level)}</b>, expires ${esc(v.expires_at || "never")}.</p>`;
+  $("result").innerHTML = h;
+  refresh();
+};
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>
