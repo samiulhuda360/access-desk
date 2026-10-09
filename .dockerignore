@@ -1,0 +1,15 @@
+.git
+.github
+.venv
+venvs
+__pycache__
+*.pyc
+tests
+docs
+eval/_run.log
+grants.jsonl
+access-audit.jsonl
+*.egg-info
+.ruff_cache
+.mypy_cache
+.pytest_cache

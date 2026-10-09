@@ -1,0 +1,3 @@
+# Keep LF endings so the committed cache and dataset match on every platform (CI replays them).
+* text=auto eol=lf
+*.png binary

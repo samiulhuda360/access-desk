@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.venv/
+venvs/
+# Runtime state (generated at run time, not committed)
+grants.jsonl
+access-audit.jsonl
+/gate-audit.jsonl
+eval/_run.log
+*.tmp
