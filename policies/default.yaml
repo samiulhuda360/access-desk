@@ -1,0 +1,35 @@
+# Default access-desk policy. Copy this per team or environment and adjust the numbers.
+# The model only supplies probabilities; every threshold and cap here is enforced in code.
+name: default
+
+thresholds:
+  auto_approve_risk_below: 1.2   # risk score (0..3) must be under this to auto-approve
+  max_critical: 0.15             # probability of the top risk level allowed for auto-approval
+  min_fits_role: 0.75            # must clearly fit the requester's role
+  min_justification: 0.6         # justification must be specific and work-related
+  max_over_asking: 0.4           # must not ask for more than the task needs
+  min_time_limited: 0.5          # must be suitably time-boxed
+  min_confidence: 0.4            # model must be confident about the level needed
+
+# Systems at or above this sensitivity always go to a person.
+auto_approve_max_sensitivity: medium
+# Access at or above this level always goes to a person (admin is never auto-granted here).
+auto_approve_max_level: write
+
+default_expiry_days: 7           # time-box applied when the request states no duration
+max_expiry_days: 30             # cap on any auto-approved or recommended grant
+
+# Contractors and interns are never auto-approved above this level.
+restricted_employment: [contractor, intern]
+restricted_employment_max_level: read
+
+approval:
+  timeout_s: 300                 # no answer in this time = deny (fail closed)
+
+# Hard overrides of the model. Each rule matches on any of: role, team, employment, system, sensitivity, level.
+deny_rules:
+  # Nobody is auto/quick-granted standing admin on the identity console except through a change request.
+  - { system: iam-console, level: admin, employment: contractor }
+  - { system: iam-console, level: admin, employment: intern }
+
+allow_rules: []

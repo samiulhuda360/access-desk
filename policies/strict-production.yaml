@@ -1,0 +1,32 @@
+# A stricter policy for a security-sensitive org: auto-approve only low-sensitivity reads, short time-box.
+name: strict-production
+
+thresholds:
+  auto_approve_risk_below: 0.8
+  max_critical: 0.05
+  min_fits_role: 0.85
+  min_justification: 0.75
+  max_over_asking: 0.25
+  min_time_limited: 0.7
+  min_confidence: 0.6
+
+auto_approve_max_sensitivity: low
+auto_approve_max_level: read
+
+default_expiry_days: 3
+max_expiry_days: 14
+
+restricted_employment: [contractor, intern]
+restricted_employment_max_level: read
+
+approval:
+  timeout_s: 600
+
+deny_rules:
+  - { system: payments-gateway, employment: contractor }
+  - { system: payroll, employment: contractor }
+  - { system: payroll, employment: intern }
+  - { system: iam-console, level: admin, employment: contractor }
+  - { system: iam-console, level: admin, employment: intern }
+
+allow_rules: []
