@@ -1,0 +1,24 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: mypy
+      - run: pytest -q
+      # The eval replays the committed cache offline. No API key is set here, so CI never calls a model.
+      - run: ACCESSDESK_OFFLINE=1 python eval/run_eval.py --backends jev,llm,rules
+        env:
+          ACCESSDESK_OFFLINE: "1"
