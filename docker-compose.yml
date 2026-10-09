@@ -1,0 +1,33 @@
+services:
+  access-desk:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      # The service's own API key (callers send it as X-API-Key). Required.
+      ACCESSDESK_API_KEY: ${ACCESSDESK_API_KEY:?set ACCESSDESK_API_KEY}
+      # Decision backend: jev when a key is set, else the rules baseline.
+      TYPESAFE_API_KEY: ${TYPESAFE_API_KEY:-}
+      ACCESSDESK_BACKEND: ${ACCESSDESK_BACKEND:-}
+      ACCESSDESK_TIMEOUT_S: "3"
+      # Approval channel for escalations: console | telegram | slack | teams | webhook | none.
+      ACCESSDESK_NOTIFIER: ${ACCESSDESK_NOTIFIER:-none}
+      ACCESSDESK_PUBLIC_URL: ${ACCESSDESK_PUBLIC_URL:-http://localhost:8080}
+      ACCESSDESK_SLACK_WEBHOOK_URL: ${ACCESSDESK_SLACK_WEBHOOK_URL:-}
+      ACCESSDESK_TEAMS_WEBHOOK_URL: ${ACCESSDESK_TEAMS_WEBHOOK_URL:-}
+      ACCESSDESK_TELEGRAM_BOT_TOKEN: ${ACCESSDESK_TELEGRAM_BOT_TOKEN:-}
+      ACCESSDESK_TELEGRAM_CHAT_ID: ${ACCESSDESK_TELEGRAM_CHAT_ID:-}
+    volumes:
+      - accessdesk-data:/data
+    restart: unless-stopped
+
+  # Revokes expired grants on a timer. Shares the same /data volume as the service.
+  expiry:
+    build: .
+    command: ["accessdesk", "expire", "--watch", "--interval", "60", "--grants", "/data/grants.jsonl", "--audit-log", "/data/access-audit.jsonl"]
+    volumes:
+      - accessdesk-data:/data
+    restart: unless-stopped
+
+volumes:
+  accessdesk-data:
