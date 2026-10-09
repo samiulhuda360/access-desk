@@ -1,0 +1,79 @@
+# Invented company directory for "Northwind", a fictional mid-size software firm.
+# No real person, company or system appears here. Used only to give the gate context.
+
+people:
+  # platform / SRE
+  - { id: dana_sre,         name: Dana Okafor,     role: Site Reliability Engineer, team: Platform,    manager: nadia_eng_mgr, employment: employee }
+  - { id: owen_sre,         name: Owen Price,      role: Site Reliability Engineer, team: Platform,    manager: nadia_eng_mgr, employment: employee }
+  - { id: priya_devops,     name: Priya Nair,      role: DevOps Engineer,           team: Platform,    manager: nadia_eng_mgr, employment: employee }
+  # product engineering
+  - { id: evan_eng,         name: Evan Lindqvist,  role: Software Engineer,         team: Checkout,    manager: marco_eng_mgr, employment: employee }
+  - { id: mia_eng,          name: Mia Chen,        role: Software Engineer,         team: Checkout,    manager: marco_eng_mgr, employment: employee }
+  - { id: raj_eng,          name: Raj Patel,       role: Senior Software Engineer,  team: Catalogue,   manager: marco_eng_mgr, employment: employee }
+  - { id: lena_eng,         name: Lena Fischer,    role: Software Engineer,         team: Catalogue,   manager: marco_eng_mgr, employment: employee }
+  # data
+  - { id: dot_data,         name: Dot Ibrahim,     role: Data Engineer,             team: Data,        manager: nadia_eng_mgr, employment: employee }
+  - { id: ana_analyst,      name: Ana Ruiz,        role: Data Analyst,              team: Data,        manager: nadia_eng_mgr, employment: employee }
+  - { id: ken_analyst,      name: Ken Mori,        role: Data Analyst,              team: Analytics,   manager: beth_ops_mgr,  employment: employee }
+  # support
+  - { id: iris_support,     name: Iris Donovan,    role: Support Engineer,          team: Support,     manager: beth_ops_mgr,  employment: employee }
+  - { id: sol_support,      name: Sol Amari,       role: Support Agent,             team: Support,     manager: beth_ops_mgr,  employment: employee }
+  - { id: gabe_support,     name: Gabe Flores,     role: Support Agent,             team: Support,     manager: beth_ops_mgr,  employment: employee }
+  # sales & marketing
+  - { id: sam_sales,        name: Sam Whitfield,   role: Account Executive,         team: Sales,       manager: rhea_rev_mgr,  employment: employee }
+  - { id: tara_sales,       name: Tara Nguyen,     role: Sales Development Rep,     team: Sales,       manager: rhea_rev_mgr,  employment: employee }
+  - { id: max_marketing,    name: Max Berger,      role: Marketing Specialist,      team: Marketing,   manager: rhea_rev_mgr,  employment: employee }
+  # finance
+  - { id: fiona_finance,    name: Fiona Doyle,     role: Finance Analyst,           team: Finance,     manager: beth_ops_mgr,  employment: employee }
+  # managers
+  - { id: nadia_eng_mgr,    name: Nadia Haddad,    role: Engineering Manager,       team: Platform,    manager: cto_vik,       employment: employee }
+  - { id: marco_eng_mgr,    name: Marco Villa,     role: Engineering Manager,       team: Product,     manager: cto_vik,       employment: employee }
+  - { id: beth_ops_mgr,     name: Beth Carrow,     role: Operations Manager,        team: Operations,  manager: cto_vik,       employment: employee }
+  - { id: rhea_rev_mgr,     name: Rhea Solis,      role: Revenue Manager,           team: Revenue,     manager: cto_vik,       employment: employee }
+  # leadership / IT admin
+  - { id: cto_vik,          name: Vik Anand,       role: Chief Technology Officer,  team: Leadership,  manager: "",            employment: employee }
+  - { id: admin_jo,         name: Jo Albright,     role: IT Administrator,          team: IT,          manager: cto_vik,       employment: employee }
+  # contractors and interns
+  - { id: victor_contractor,name: Victor Sarno,    role: Software Engineer,         team: Checkout,    manager: marco_eng_mgr, employment: contractor }
+  - { id: wendy_contractor, name: Wendy Boe,       role: Data Analyst,              team: Data,        manager: nadia_eng_mgr, employment: contractor }
+  - { id: theo_intern,      name: Theo Park,       role: Engineering Intern,        team: Catalogue,   manager: marco_eng_mgr, employment: intern }
+  - { id: zoe_intern,       name: Zoe Hart,        role: Support Intern,            team: Support,     manager: beth_ops_mgr,  employment: intern }
+
+systems:
+  - { id: wiki,             name: Internal Wiki,              owner: admin_jo,      sensitivity: low,
+      description: "internal documentation and runbooks", role_defaults: { "Software Engineer": read, "Support Engineer": read, "Data Analyst": read } }
+  - { id: ci-pipeline,      name: CI/CD Pipeline,             owner: priya_devops,  sensitivity: medium,
+      description: "build and deployment pipeline", role_defaults: { "Software Engineer": read, "Site Reliability Engineer": write } }
+  - { id: dev-sandbox,      name: Dev Sandbox Cluster,        owner: priya_devops,  sensitivity: low,
+      description: "non-production development cluster", role_defaults: { "Software Engineer": write, "DevOps Engineer": admin } }
+  - { id: staging-api,      name: Staging Shop API,           owner: marco_eng_mgr, sensitivity: medium,
+      description: "pre-production copy of the shop API", role_defaults: { "Software Engineer": write } }
+  - { id: analytics-warehouse, name: Analytics Warehouse,     owner: nadia_eng_mgr, sensitivity: medium,
+      description: "de-identified product analytics tables", role_defaults: { "Data Analyst": read, "Data Engineer": write } }
+  - { id: error-tracker,    name: Error Tracker,              owner: nadia_eng_mgr, sensitivity: medium,
+      description: "application error and trace dashboard", role_defaults: { "Software Engineer": read, "Site Reliability Engineer": read, "Support Engineer": read } }
+  - { id: feature-flags,    name: Feature Flag Service,       owner: marco_eng_mgr, sensitivity: medium,
+      description: "runtime feature toggles", role_defaults: { "Software Engineer": read } }
+  - { id: prod-orders-db,   name: Production Orders Database,  owner: nadia_eng_mgr, sensitivity: high,
+      description: "live customer orders, contains personal data", role_defaults: { "Site Reliability Engineer": read } }
+  - { id: prod-web,         name: Production Web Servers,      owner: priya_devops,  sensitivity: high,
+      description: "the live shop web tier", role_defaults: { "Site Reliability Engineer": write } }
+  - { id: payments-gateway, name: Payments Gateway,           owner: cto_vik,       sensitivity: critical,
+      description: "processes live card payments", role_defaults: {} }
+  - { id: payroll,          name: Payroll System,             owner: beth_ops_mgr,  sensitivity: critical,
+      description: "employee salaries and bank details", role_defaults: {} }
+  - { id: crm,              name: Customer CRM,               owner: rhea_rev_mgr,  sensitivity: high,
+      description: "customer accounts and contact details", role_defaults: { "Account Executive": read, "Sales Development Rep": read } }
+  - { id: billing-admin,    name: Billing Admin Console,      owner: rhea_rev_mgr,  sensitivity: critical,
+      description: "issue refunds and change billing", role_defaults: {} }
+  - { id: iam-console,      name: Identity & Access Console,   owner: admin_jo,      sensitivity: critical,
+      description: "manage user accounts and permissions", role_defaults: { "IT Administrator": admin } }
+  - { id: marketing-cms,    name: Marketing CMS,              owner: rhea_rev_mgr,  sensitivity: low,
+      description: "public website content", role_defaults: { "Marketing Specialist": write } }
+
+# Standing access some people already hold, beyond their role defaults.
+current_access:
+  dana_sre: { prod-web: write, prod-orders-db: read }
+  owen_sre: { prod-web: write }
+  iris_support: { crm: read }
+  admin_jo: { iam-console: admin, payroll: read }
