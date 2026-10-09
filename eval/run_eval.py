@@ -139,8 +139,8 @@ def metrics_for(name: str, rows: list[Row], latencies: list[float], usage: dict[
         "level_accuracy": level_correct / len(level_items) if level_items else 0.0,
         "brier": score,
         "reliability": table,
-        "latency_p50_ms": statistics.median(latencies) if latencies else 0.0,
-        "latency_p95_ms": _pct(latencies, 95),
+        "latency_p50_ms": round(statistics.median(latencies), 1) if latencies else 0.0,
+        "latency_p95_ms": round(_pct(latencies, 95), 1),
         "cost_per_1000_usd": cost,
         "usage": usage,
     }

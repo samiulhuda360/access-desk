@@ -45,8 +45,8 @@
           70
         ]
       ],
-      "latency_p50_ms": 229.8437999561429,
-      "latency_p95_ms": 309.8345003090799,
+      "latency_p50_ms": 229.8,
+      "latency_p95_ms": 309.8,
       "cost_per_1000_usd": 0.04359358024691359,
       "usage": {
         "input": 252220,
@@ -94,8 +94,8 @@
           61
         ]
       ],
-      "latency_p50_ms": 1105.7285000570118,
-      "latency_p95_ms": 15858.312900178134,
+      "latency_p50_ms": 1105.7,
+      "latency_p95_ms": 15858.3,
       "cost_per_1000_usd": 0.13937234042553193,
       "usage": {
         "input": 125279,
@@ -143,8 +143,8 @@
           83
         ]
       ],
-      "latency_p50_ms": 0.004100147634744644,
-      "latency_p95_ms": 0.005499925464391708,
+      "latency_p50_ms": 0.0,
+      "latency_p95_ms": 0.0,
       "cost_per_1000_usd": 0.0,
       "usage": {
         "input": 0,
