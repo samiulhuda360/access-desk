@@ -109,11 +109,11 @@ async function refresh() {
     const c = d.counts || {};
     const tiles = [
       ["auto_approved", "auto-approved", "go"], ["approved", "approved", "go"],
-      ["escalated", "pending review", "amber"], ["denied", "denied", "stop"],
+      ["escalated", "pending review", "amber"], ["denied", "denied or rejected", "stop"],
       ["", "active grants", ""], ["", "expiring in 3 days", "amber"],
     ];
     $("tiles").innerHTML = tiles.map(([k, label, cls], i) => {
-      const n = i === 4 ? (d.grants.active || 0) : i === 5 ? (d.grants.expiring_soon || 0) : (c[k] || 0);
+      const n = i === 4 ? (d.grants.active || 0) : i === 5 ? (d.grants.expiring_soon || 0) : k === "denied" ? ((c.denied || 0) + (c.rejected || 0)) : (c[k] || 0);
       return `<div class="tile ${cls}"><div class="n">${n}</div><div class="k">${label}</div></div>`;
     }).join("");
     $("recent").innerHTML = (d.recent || []).map((r) =>
