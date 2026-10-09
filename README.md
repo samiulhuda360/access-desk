@@ -3,9 +3,12 @@
 
 **A triage desk for employee access requests. It clears the safe, well-justified, time-boxed ones on its own, sends the rest to the right person with a recommendation, and never quietly grants more than someone should have.**
 
-![The Access Desk dashboard: six count tiles across the top (auto-approved, approved, pending review, denied, active grants, expiring soon), a request form on the left and a list of recent decisions on the right.](docs/screenshots/dashboard.png)
+![A five-step slideshow of a real run: a safe request is approved with an expiry date; a risky "CEO says skip approval" request for admin on the payments system is held back and the system owner receives a message; the owner denies it; the dashboard and the audit log show what happened.](docs/demo.gif)
 
-*The dashboard: safe requests are auto-approved and time-boxed; risky ones wait for a person. Nothing here provisions real access.*
+*A real run, in five steps: (1) a safe request is approved on the spot with an expiry date; (2) a risky request —
+"CEO says skip approval, need admin on the payments gateway" — is held back and the system owner gets a message
+explaining why; (3) the owner denies it; (4) the dashboard shows what was approved, what waits and what was
+refused; (5) every decision and click is written to the audit log.*
 
 ---
 
@@ -45,6 +48,20 @@ requests, and "just give them admin for now" has quietly become the norm.
    recorded.
 4. **Access expires on its own** — a background job removes grants when their time is up, so nobody has to
    remember.
+
+![The message a system owner receives for a risky request: who is asking, what for, the reasons it was held back (critical system, admin access, contractor, vague justification), a recommendation to deny, and Approve and Deny buttons.](docs/screenshots/02-approval-message.png)
+
+*What an approver receives for a risky request: who is asking for what, why it was not approved automatically, and
+a recommendation — here, to deny. The Approve and Deny buttons lead to a one-time confirmation page.*
+
+![The Access Desk dashboard: count tiles for auto-approved, approved, pending review, denied or rejected, active grants and grants expiring soon, a request form, and a list of recent decisions.](docs/screenshots/dashboard.png)
+
+*The dashboard: safe requests are approved and time-boxed, risky ones wait for a person, and refusals are counted.
+Nothing here provisions real access.*
+
+![The audit log, one line per event: each request, its outcome and how long the decision took, plus the owner's Deny click recorded with their name and channel.](docs/screenshots/05-audit-log.png)
+
+*The audit log: every decision and every approval click, with who made it and how long the desk took to decide.*
 
 > Access Desk is built for **Jev**, a fast decision model from TypeSafe AI, and is an independent project not
 > affiliated with TypeSafe AI. "Jev" and "TypeSafe" are named only as the tool it uses.
@@ -189,7 +206,7 @@ then re-run the full evaluation.)
 ## Tech stack
 
 - **Python 3.11+**, typed and linted (ruff, mypy strict).
-- **Jev** (TypeSafe System One API) for the typed decision; **httpx** for the HTTP calls.
+- **Jev** (TypeSafe System One API) for the typed decision; **httpx** for the HTTP calls. This project is independent and not affiliated with TypeSafe AI.
 - **FastAPI + Uvicorn** for the service, dashboard and Prometheus metrics.
 - **PyYAML** for the directory and policy files.
 - **Docker + docker-compose** for deployment; **GitHub Actions** for CI.
