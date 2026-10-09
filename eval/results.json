@@ -1,0 +1,187 @@
+{
+  "n_items": 243,
+  "n_evaluated": 141,
+  "coverage": {
+    "jev": 243,
+    "llm": 141,
+    "rules": 243
+  },
+  "backends": {
+    "jev": {
+      "n": 141,
+      "auto_approve_recall": 0.5957446808510638,
+      "should_auto": 47,
+      "risky_auto_approve_rate": 0.0,
+      "risky_auto_approved": 0,
+      "automation_rate": 0.20567375886524822,
+      "auto_approved": 29,
+      "decision_accuracy": 0.7375886524822695,
+      "level_accuracy": 0.9137931034482759,
+      "brier": 0.19886524822695034,
+      "reliability": [
+        [
+          0.030545454545454546,
+          0.09090909090909091,
+          55
+        ],
+        [
+          0.3075,
+          0.75,
+          4
+        ],
+        [
+          0.47,
+          0.5,
+          4
+        ],
+        [
+          0.7225,
+          0.125,
+          8
+        ],
+        [
+          0.9764285714285713,
+          0.7285714285714285,
+          70
+        ]
+      ],
+      "latency_p50_ms": 229.8437999561429,
+      "latency_p95_ms": 309.8345003090799,
+      "cost_per_1000_usd": 0.04359358024691359,
+      "usage": {
+        "input": 252220,
+        "output": 37422,
+        "calls": 243,
+        "live_calls": 0,
+        "misses": 0
+      }
+    },
+    "llm": {
+      "n": 141,
+      "auto_approve_recall": 0.7446808510638298,
+      "should_auto": 47,
+      "risky_auto_approve_rate": 0.0,
+      "risky_auto_approved": 0,
+      "automation_rate": 0.2553191489361702,
+      "auto_approved": 36,
+      "decision_accuracy": 0.7872340425531915,
+      "level_accuracy": 0.9568965517241379,
+      "brier": 0.1872340425531915,
+      "reliability": [
+        [
+          0.037000000000000005,
+          0.1,
+          50
+        ],
+        [
+          0.228125,
+          0.3125,
+          16
+        ],
+        [
+          0.54,
+          0.6,
+          5
+        ],
+        [
+          0.7124999999999999,
+          0.75,
+          12
+        ],
+        [
+          0.951639344262295,
+          0.6885245901639344,
+          61
+        ]
+      ],
+      "latency_p50_ms": 1105.7285000570118,
+      "latency_p95_ms": 15858.312900178134,
+      "cost_per_1000_usd": 0.13937234042553193,
+      "usage": {
+        "input": 125279,
+        "output": 17809,
+        "calls": 141,
+        "live_calls": 0,
+        "misses": 102
+      }
+    },
+    "rules": {
+      "n": 141,
+      "auto_approve_recall": 0.8936170212765957,
+      "should_auto": 47,
+      "risky_auto_approve_rate": 0.08064516129032258,
+      "risky_auto_approved": 5,
+      "automation_rate": 0.375886524822695,
+      "auto_approved": 53,
+      "decision_accuracy": 0.7659574468085106,
+      "level_accuracy": 0.8620689655172413,
+      "brier": 0.24822695035460993,
+      "reliability": [
+        [
+          0.0,
+          0.1206896551724138,
+          58
+        ],
+        [
+          0.30000000000000004,
+          NaN,
+          0
+        ],
+        [
+          0.5,
+          NaN,
+          0
+        ],
+        [
+          0.7,
+          NaN,
+          0
+        ],
+        [
+          1.0,
+          0.6626506024096386,
+          83
+        ]
+      ],
+      "latency_p50_ms": 0.004100147634744644,
+      "latency_p95_ms": 0.005499925464391708,
+      "cost_per_1000_usd": 0.0,
+      "usage": {
+        "input": 0,
+        "output": 0,
+        "calls": 243,
+        "live_calls": 243,
+        "misses": 0
+      }
+    }
+  },
+  "automation_curve": {
+    "jev": [
+      {
+        "risk_line": 0.6,
+        "automation_rate": 0.09929078014184398,
+        "risky_auto_approved": 0
+      },
+      {
+        "risk_line": 0.9,
+        "automation_rate": 0.09929078014184398,
+        "risky_auto_approved": 0
+      },
+      {
+        "risk_line": 1.2,
+        "automation_rate": 0.20567375886524822,
+        "risky_auto_approved": 0
+      },
+      {
+        "risk_line": 1.5,
+        "automation_rate": 0.2127659574468085,
+        "risky_auto_approved": 0
+      },
+      {
+        "risk_line": 1.8,
+        "automation_rate": 0.2127659574468085,
+        "risky_auto_approved": 0
+      }
+    ]
+  }
+}
